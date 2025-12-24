@@ -1,0 +1,25 @@
+baseURL = 'https://yukangzhou.github.io/'
+languageCode = 'zh-cn'
+title = 'wholosewin blog'
+theme = 'PaperMod'
+
+[params]
+  defaultTheme = "auto"
+  [params.homeInfoParams]
+    Title = "你好，我是wholosewin <wholosewin>"
+    Content = "欢迎来到我的博客主页：个人 / 博客 / 教程"
+
+[[menu.main]]
+  name = "个人"
+  url = "/posts"
+  weight = 1
+
+[[menu.main]]
+  name = "教程"
+  url = "/docs"
+  weight = 2
+
+[[menu.main]]
+  name = "学习"
+  url = "/study"
+  weight = 3
