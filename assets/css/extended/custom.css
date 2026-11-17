@@ -1,0 +1,60 @@
+/* =============================================================================
+   自定义样式 —— 改这里就能换外观，不会影响主题本体
+   PaperMod 预留了 assets/css/extended/*.css，构建时自动打包进最终样式表
+   可用变量见 themes/PaperMod/assets/css/core/theme-vars.css：
+     --main-width(正文宽度) --nav-width(导航宽度) --radius(圆角)
+     --primary(主文字) --secondary(次要文字) --content(正文) --theme(背景)
+   ============================================================================= */
+
+/* ---------- 整体观感 ---------- */
+:root {
+    --main-width: 780px;   /* 正文更宽一点，中文一行能放约 40 字 */
+    --radius: 10px;        /* 卡片圆角 */
+}
+
+/* 中文字体栈：优先使用系统中文字体，标点挤压更自然 */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI',
+        'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei',
+        'Source Han Sans SC', 'Noto Sans CJK SC', Roboto, sans-serif;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* 中文正文行距和段距稍微松一点，长文更耐读 */
+.post-content p {
+    line-height: 1.85;
+    margin: 1.1em 0;
+}
+
+/* 行内代码：去掉默认灰底，换成浅描边 */
+code:not(pre code) {
+    padding: 0.15em 0.4em;
+    border-radius: 4px;
+    background: var(--code-bg);
+}
+
+/* 图片统一加圆角和细描边 */
+.post-content img {
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+}
+
+/* 文章标题下的分类/标签小胶囊更圆 */
+.post-tags a,
+.terms-tags a {
+    border-radius: 999px;
+}
+
+/* ---------- 深色模式微调（只写需要覆盖的部分）---------- */
+[data-theme='dark'] {
+    --main-width: 780px;
+}
+
+/* ---------- 想换主题色？取消下面注释并改成你的颜色 ----------
+   浅色模式主色调（正文文字色）
+:root { --content: rgb(25, 28, 33); --secondary: rgb(120, 128, 140); }
+   深色模式主色调
+[data-theme='dark'] { --content: rgb(210, 214, 220); }
+   列表页背景换成淡米色
+[data-theme='light'] .list { background: rgb(248, 247, 245); }
+---------------------------------------------------------------- */

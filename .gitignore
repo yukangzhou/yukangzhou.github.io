@@ -1,0 +1,12 @@
+# Hugo 构建产物（由 GitHub Actions 生成并推到 gh-pages 分支，源码分支里不该提交）
+/public/
+
+# Hugo 缓存与锁文件
+/resources/_gen/
+/.hugo_build.lock
+
+# 本地临时文件
+node_modules/
+.DS_Store
+Thumbs.db
+*.log

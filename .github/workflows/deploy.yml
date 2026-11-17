@@ -3,27 +3,42 @@ name: Deploy Hugo site to GitHub Pages
 on:
   push:
     branches:
-      - main  # 👈 每次推送到 main 分支就会自动部署
+      - main   # 推送到 main 就自动重新建站部署
+  workflow_dispatch: # 也可以在 Actions 页面手动点一次「Run workflow」
+
+# 同一时间只跑一个部署，避免连推多次互相覆盖
+concurrency:
+  group: pages
+  cancel-in-progress: true
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write   # actions-gh-pages 需要写权限才能推送到 gh-pages 分支
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # 拉完整历史，供 enableGitInfo / lastmod 使用
 
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@v2
         with:
-          hugo-version: 'latest'
+          # 固定版本，和本地保持一致；'latest' 会哪天突然把站点构建搞坏
+          # 升级时改这里，并同步本地 hugo 版本
+          hugo-version: '0.154.5'
           extended: true
 
       - name: Build Hugo site
+        # 注意不要加 --buildDrafts，否则 draft = true 的文章会被提前发布
+        # 也不加 --buildFuture，这样 date 写成未来的时间就是「定时发布」
         run: hugo --minify
 
-      - name: Deploy to GitHub Pages 🚀
+      - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
           publish_dir: ./public

@@ -1,25 +1,166 @@
+# =============================================================================
+#  wholosewin blog — Hugo 配置
+#  改完这个文件，本地 `hugo server` 会自动热重载，浏览器里立刻看到效果
+# =============================================================================
+
+# ---------- 站点基本信息 ----------
 baseURL = 'https://yukangzhou.github.io/'
-languageCode = 'zh-cn'
 title = 'wholosewin blog'
 theme = 'PaperMod'
 
-[params]
-  defaultTheme = "auto"
-  [params.homeInfoParams]
-    Title = "你好，我是wholosewin <wholosewin>"
-    Content = "欢迎来到我的博客主页：个人 / 博客 / 教程"
+# ---------- 中文站点关键设置 ----------
+# defaultContentLanguage 必须是 "zh"，主题才会加载 i18n/zh.yaml 里的中文界面词
+defaultContentLanguage = 'zh'
+languageCode = 'zh-CN'
+# hasCJKLanguage 打开后，中文的"阅读时长 / 字数统计 / 摘要截断"才准确
+hasCJKLanguage = true
+timeZone = 'Asia/Shanghai'
+enableRobotsTXT = true
 
+# 每页文章数
+[pagination]
+  pagerSize = 8
+
+# ---------- 分类与标签（两种都用，自动生成 /categories/ 和 /tags/ 页面）----------
+[taxonomies]
+  category = 'categories'
+  tag = 'tags'
+
+# ---------- 首页输出 RSS + 搜索索引 JSON（搜索页依赖 /index.json）----------
+[outputs]
+  home = ['HTML', 'RSS', 'JSON']
+
+# =============================================================================
+#  主题参数（PaperMod）
+# =============================================================================
+[params]
+  author = 'wholosewin'
+  description = 'wholosewin 的个人博客：技术笔记、教程与学习记录'
+  keywords = ['博客', '技术笔记', '教程', '学习笔记']
+
+  # 文章列表里的日期格式
+  DateFormat = '2006-01-02'
+  # auto = 跟随系统深浅色；也可写 "light" / "dark"
+  defaultTheme = 'auto'
+  # 首页/归档/RSS 只统计 posts 目录下的文章
+  mainSections = ['posts']
+
+  # ---------- 单篇文章页的显示开关 ----------
+  ShowReadingTime = true      # 阅读时长
+  ShowWordCount = true        # 字数
+  ShowPostNavLinks = true     # 上一篇 / 下一篇
+  ShowBreadCrumbs = true      # 面包屑导航
+  ShowCodeCopyButtons = true  # 代码块一键复制按钮
+  ShowShareButtons = false    # 分享按钮（国内平台支持有限，默认关）
+  ShowToc = true              # 文章目录（文章里有二级以上标题时出现）
+  TocOpen = false             # true = 目录默认展开
+  ShowRssButtonInSectionTermList = true  # 分类/标签页显示 RSS 按钮
+  disableScrollToTop = false
+
+  # 站点级默认分享图（别人转发链接时显示的大图，图片放 static/ 下）
+  images = ['images/demo-cover.png']
+
+  # ============================================================================
+  # ⚠ TOML 规则：下面这些 [params.xxx] 子表必须写在上面所有"单行键值"之后。
+  # 一旦开了子表，后面的键就全部归属那个子表——顺序写错，参数会静默失效。
+  # ============================================================================
+
+  # ---------- 首页顶部介绍卡 ----------
+  # 注意：这张卡片只显示 Title / Content / 社交图标，主题不支持在这里放头像。
+  # 想要"居中头像 + 一句话"的个人主页式首页，改用 profileMode（见维护指南第七章）。
+  [params.homeInfoParams]
+    Title = '你好，我是 wholosewin'
+    Content = '欢迎来到我的博客：技术笔记 / 教程 / 学习记录。'
+    # 社交图标对齐方向：'left' 或 'right'
+    AlignSocialIconsTo = 'left'
+
+  # ---------- 个人主页式首页（想用头像就取消下面注释，并把头像放 static/avatar.png）
+  # 开启后首页变成居中卡片，homeInfoParams 会被取代，文章列表仍在下方
+  # [params.profileMode]
+  #   enabled = true
+  #   title = 'wholosewin'
+  #   subtitle = '技术笔记 / 教程 / 学习记录'
+  #   imageUrl = 'avatar.png'      # 相对路径会先查 assets/，找不到就按 static/ 原样输出
+  #   imageWidth = 150
+  #   imageHeight = 150
+  #   imageTitle = '我的头像'
+  #   [[params.profileMode.buttons]]
+  #     name = '文章'
+  #     url = '/posts/'
+  #   [[params.profileMode.buttons]]
+  #     name = '关于'
+  #     url = '/about/'
+
+  # ---------- 页脚 ----------
+  [params.footer]
+    # true = 隐藏自动生成的版权行
+    hideCopyright = false
+    text = '用心记录，慢慢积累。'
+
+  # ---------- 文章底部「在 GitHub 上编辑此文」链接 ----------
+  # appendFilePath = true 会自动把文章路径拼到 URL 后面，不要手动写 {path}
+  [params.editPost]
+    URL = 'https://github.com/yukangzhou/yukangzhou.github.io/edit/main/content'
+    Text = '编辑此文'
+    appendFilePath = true
+
+  # ---------- 社交图标（主题内置 149 个图标名，如 github/zhihu/bilibili/x/email/rss）----------
+  # 把 url 换成你自己的主页即可；不需要的整块删掉
+  [[params.socialIcons]]
+    name = 'github'
+    url = 'https://github.com/yukangzhou'
+  [[params.socialIcons]]
+    name = 'email'
+    url = 'mailto:you@example.com'
+
+  # ---------- 站内搜索的模糊匹配调优（可选）----------
+  [params.fuseOpts]
+    isCaseSensitive = false
+    shouldSort = true
+    minMatchCharLength = 1
+    keys = ['title', 'permalink', 'summary', 'content']
+
+# =============================================================================
+#  Markdown / 代码高亮
+# =============================================================================
+[markup]
+  [markup.highlight]
+    # 必须为 false：PaperMod 的代码配色靠 CSS class 实现，
+    # 设成 true 会让深色模式下的代码块变成刺眼的白底
+    noClasses = false
+    codeFences = true
+    guessLinesSyntax = false
+    lineNos = false
+    tabWidth = 4
+  [markup.goldmark.renderer]
+    # 允许在 Markdown 里直接写 HTML（嵌入视频、iframe 时需要）
+    unsafe = true
+
+# =============================================================================
+#  顶部导航菜单（每一项都指向真实存在的页面，不再有 404）
+# =============================================================================
 [[menu.main]]
-  name = "个人"
-  url = "/posts"
+  name = '文章'
+  url = '/posts/'
   weight = 1
 
 [[menu.main]]
-  name = "教程"
-  url = "/docs"
+  name = '分类'
+  url = '/categories/'
   weight = 2
 
 [[menu.main]]
-  name = "学习"
-  url = "/study"
+  name = '标签'
+  url = '/tags/'
   weight = 3
+
+[[menu.main]]
+  name = '归档'
+  url = '/archives/'
+  weight = 4
+
+[[menu.main]]
+  name = '搜索'
+  url = '/search/'
+  weight = 5
+
